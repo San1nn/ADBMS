@@ -83,3 +83,111 @@ mysql> desc duplicate_employee;
 mysql> 
 
 //VERIFIED
+
+
+
+mysql> desc customer;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| cust_id | int         | NO   | PRI | NULL    |       |
+| name    | varchar(30) | YES  |     | NULL    |       |
+| address | varchar(30) | YES  |     | NULL    |       |
+| city    | varchar(30) | YES  |     | NULL    |       |
+| phoneno | int         | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+5 rows in set (0.02 sec)
+
+mysql> desc product;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| pid   | int         | NO   | PRI | NULL    |       |
+| pname | varchar(30) | YES  |     | NULL    |       |
+| price | int         | YES  |     | 0       |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> create table invoice_master(inv_id int primary key, custid int, inv_date date,foreign key(custid) references customer(cust_id));
+Query OK, 0 rows affected (1.64 sec)
+
+mysql> create table invoice_item(inv_id int,pid int,quantity int,foreign key(pid) references product(pid),foreign key(inv_id) references invoice_master(inv_id));
+Query OK, 0 rows affected (1.26 sec)
+
+mysql> use sanin;
+
+Database changed
+
+
+mysql> alter table employee add column ssn int;
+Query OK, 0 rows affected (0.52 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc employee;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| emp_id   | int         | YES  |     | NULL    |       |
+| name     | varchar(30) | YES  |     | NULL    |       |
+| city     | varchar(30) | YES  |     | NULL    |       |
+| dob      | date        | YES  |     | NULL    |       |
+| adhar_no | int         | YES  |     | NULL    |       |
+| ssn      | int         | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> alter table employee modify dob varchar(30);
+Query OK, 0 rows affected (1.89 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table employee drop emp_id;
+Query OK, 0 rows affected (0.49 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table employee modify adhar_no int;
+Query OK, 0 rows affected (0.14 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table employee modify adhar_no int unique;
+Query OK, 0 rows affected (0.50 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table employee modify ssn int unique;
+Query OK, 0 rows affected (0.49 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc student;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| roll_no | int         | YES  |     | NULL    |       |
+| name    | varchar(30) | YES  |     | NULL    |       |
+| age     | int         | YES  |     | NULL    |       |
+| address | varchar(30) | YES  |     | NULL    |       |
+| gender  | varchar(30) | YES  |     | m       |       |
++---------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> alter table student modify age int not null;
+Query OK, 0 rows affected (1.66 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+mysql> alter table employee rename to person;
+Query OK, 0 rows affected (0.91 sec)
+
+
+mysql> desc students;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| roll_no | int         | NO   | PRI | NULL    |       |
+| name    | varchar(30) | NO   |     | NULL    |       |
+| age     | int         | NO   |     | NULL    |       |
+| address | varchar(30) | YES  |     | NULL    |       |
+| gender  | varchar(30) | YES  |     | m       |       |
++---------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> drop table students;
+Query OK, 0 rows affected (0.40 sec)
