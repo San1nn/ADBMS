@@ -191,3 +191,7 @@ mysql> desc students;
 
 mysql> drop table students;
 Query OK, 0 rows affected (0.40 sec)
+
+//RESUBMIT
+DESCRIBE TABLE AFTER CREATION
+DOB VARCHAR??
