@@ -1,0 +1,226 @@
+a) TCL COMMANDS
+          1.    Commit
+          2.    Rollback
+          3.    Savepoint
+                  
+#rollback
+mysql> set autocommit=off;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into product values(2,"watch",300.0);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from product;
++----+-------+-------+
+| id | name  | price |
++----+-------+-------+
+|  1 | belt  |   150 |
+|  2 | watch |   300 |
++----+-------+-------+
+2 rows in set (0.00 sec)
+
+mysql> rollback;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> select * from product;
++----+------+-------+
+| id | name | price |
++----+------+-------+
+|  1 | belt |   150 |
++----+------+-------+
+1 row in set (0.00 sec)
+
+mysql> delete from product;rollback;select * from product;
+Query OK, 1 row affected (0.01 sec)
+
+Query OK, 0 rows affected (0.05 sec)
+
++----+------+-------+
+| id | name | price |
++----+------+-------+
+|  1 | belt |   150 |
++----+------+-------+
+1 row in set (0.00 sec)
+
+#savepoints
+mysql> select * from product;
++----+--------+-------+
+| id | name   | price |
++----+--------+-------+
+|  1 | belt   |   150 |
+|  3 | watch  |   300 |
+|  4 | stack  |   300 |
+|  5 | pencil |   300 |
++----+--------+-------+
+4 rows in set (0.00 sec)
+
+mysql> savepoint s1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into product values(7,"pouch",300.0);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into product values(8,"couch",300.0);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> savepoint s2;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into product values(9,"hat",300.0);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into product values(10,"hatch",300.0);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from product;
++----+--------+-------+
+| id | name   | price |
++----+--------+-------+
+|  1 | belt   |   150 |
+|  3 | watch  |   300 |
+|  4 | stack  |   300 |
+|  5 | pencil |   300 |
+|  7 | pouch  |   300 |
+|  8 | couch  |   300 |
+|  9 | hat    |   300 |
+| 10 | hatch  |   300 |
++----+--------+-------+
+8 rows in set (0.00 sec)
+
+mysql> rollback to s2;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from product;
++----+--------+-------+
+| id | name   | price |
++----+--------+-------+
+|  1 | belt   |   150 |
+|  3 | watch  |   300 |
+|  4 | stack  |   300 |
+|  5 | pencil |   300 |
+|  7 | pouch  |   300 |
+|  8 | couch  |   300 |
++----+--------+-------+
+6 rows in set (0.00 sec)
+
+mysql> rollback to s1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from product;
++----+--------+-------+
+| id | name   | price |
++----+--------+-------+
+|  1 | belt   |   150 |
+|  3 | watch  |   300 |
+|  4 | stack  |   300 |
+|  5 | pencil |   300 |
++----+--------+-------+
+
+
+
+b) DCL COMMAND
+ Create two users user1, user2
+
+1.              GRANT
+
+Give insert and select privilege to user 1 on customer table in the invoice database.
+
+Give update and delete privilege to user 2 on all tables in the invoice database.
+
+2.              REVOKE
+
+Remove delete privilege of user 2.
+
+se invoice;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> show tables;
++-------------------+
+| Tables_in_invoice |
++-------------------+
+| Product           |
+| customer          |
+| invoice_item      |
+| invoice_master    |
+| v2                |
+| vc                |
+| vcustomer         |
+| vpro              |
++-------------------+
+8 rows in set (0.01 sec)
+
+mysql> select * from customer;
++------+-----------+-----------------+------------+------------+
+| id   | name      | address         | city       | ph_no      |
++------+-----------+-----------------+------------+------------+
+| 1001 | rozarioss | abc house       | Kozhikode  | 9876543210 |
+| 1002 | Ramu      | def house       | Kozhikode  | 6754328970 |
+| 1003 | Ramu      | def house       | Kozhikode  | 6754328970 |
+| 1004 | Paru      | Manjummel house | Eranakulam | 8877665544 |
+| 1005 | Hamza     | klm house       | palakkad   | 9447879742 |
+| 1006 | babu      | pol house       | kannur     | 7895439898 |
+| 1007 | raman     | yut house       | kannur     | 976231456  |
+| 1008 | ramanan   | pokj house      | kannur     | 564312986  |
++------+-----------+-----------------+------------+------------+
+
+mysql> create user 'user1'@'localhost' identified by 'Root@123';
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> create user 'user2'@'localhost' identified by 'Root@321';
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> show grants for 'user1'@'localhost';
++-------------------------------------------+
+| Grants for user1@localhost                |
++-------------------------------------------+
+| GRANT USAGE ON *.* TO `user1`@`localhost` |
++-------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> show grants for 'user2'@'localhost';
++-------------------------------------------+
+| Grants for user2@localhost                |
++-------------------------------------------+
+| GRANT USAGE ON *.* TO `user2`@`localhost` |
++-------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> grant select,insert on customer to 'user1'@'localhost';
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> show grants for 'user1'@'localhost';
++---------------------------------------------------------------------+
+| Grants for user1@localhost                                          |
++---------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `user1`@`localhost`                           |
+| GRANT SELECT, INSERT ON `invoice`.`customer` TO `user1`@`localhost` |
++---------------------------------------------------------------------+
+2 rows in set (0.00 sec)
+
+mysql> grant update,delete on customer to 'user2'@'localhost';
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> show grants for 'user2'@'localhost';
++---------------------------------------------------------------------+
+| Grants for user2@localhost                                          |
++---------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `user2`@`localhost`                           |
+| GRANT UPDATE, DELETE ON `invoice`.`customer` TO `user2`@`localhost` |
++---------------------------------------------------------------------+
+2 rows in set (0.00 sec)
+
+mysql> revoke delete on invoice.customer from 'user2'@'localhost';
+Query OK, 0 rows affected (0.14 sec)
+
+mysql> show grants for 'user2'@'localhost';
++-------------------------------------------------------------+
+| Grants for user2@localhost                                  |
++-------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `user2`@`localhost`                   |
+| GRANT UPDATE ON `invoice`.`customer` TO `user2`@`localhost` |
++-------------------------------------------------------------+
+2 rows in set (0.00 sec)
+
+
