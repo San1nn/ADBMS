@@ -143,6 +143,6 @@ mysql> select concat(name,'  lives in ',city) from customer;
 | nabeel  lives in calicut        |
 | naheel  lives in calicut        |
 +---------------------------------+
-
+//VERIFIED
 
 
