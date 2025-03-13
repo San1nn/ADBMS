@@ -12,7 +12,7 @@ mysql> select distinct(pname) from Product;
 | Bucket |
 | Marker |
 +--------+
-
+ 
 2.    List the invoice details from 1st January 2024 to 31st march 2024
 
 mysql> select * from Invoice_master where inv_date  between '2024-01-01' and '2024-12-01';
