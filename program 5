@@ -1,0 +1,75 @@
+List the product name and price of each invoice item
+
+mysql> select pname, price from product where pid in(select pid from Invoice_item);
++--------+-------+
+| pname  | price |
++--------+-------+
+| pen    |    50 |
+| pencil |    20 |
+| soap   |    80 |
++--------+-------+
+
+2.    List the product names, only include their purchased quantity more than 3.
+
+mysql> select pname from product where pid in(select pid from Invoice_item group by pid having sum(quantity)>3);
++--------+
+| pname  |
++--------+
+| pencil |
+| soap   |
++--------+
+
+
+3.    Find the product that has no sale.
+
+mysql> insert into product values(4,'sharpner',60);
+Query OK, 1 row affected (0.09 sec)
+
+mysql> insert into product values(5,'ruler',0);
+Query OK, 1 row affected (0.09 sec)
+
+mysql> select pname from product where pid not in (select distinct pid from Invoice_item);
++----------+
+| pname    |
++----------+
+| sharpner |
+| ruler    |
++----------+
+
+4. List the customer names who purchased the items ‘pen’ and ‘pencil’
+
+mysql> select name from customer where id in (select cust_id from Invoice_master
+ where inv_id in (select inv_id from Invoice_item where pid in (select pid from
+product where pname in('pen','pencil'))));
+
++---------+
+| name    |
++---------+
+| yaseen  |
+| yasmeen |
++---------+
+2 rows in set (0.00 sec)
+
+
+5. Display the purchased product details of the customer ’xyz’.
+ 
+mysql> select pid,pname,price from product where pid in (select pid from Invoice_item where inv_id  in (select inv_id from Invoice_master where cust_id =( select id from customer where name='amil')));
++-----+-------+-------+
+| pid | pname | price |
++-----+-------+-------+
+|   3 | soap  |    80 |
++-----+-------+-------+
+1 row in set (0.00 sec)
+
+
+6.   List the names of all customers who have purchased at least 2 products, make sure that no duplicate names in the result.
+
+mysql> select distinct name from customer where id in(select cust_id from Invoice_master where inv_id in (select inv_id from Invoice_item group by inv_id having count(*)>=2));
++--------+
+| name   |
++--------+
+| yaseen |
++--------+
+1 row in set (0.02 sec)
+
+
