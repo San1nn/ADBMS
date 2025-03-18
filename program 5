@@ -8,7 +8,7 @@ mysql> select pname, price from product where pid in(select pid from Invoice_ite
 | pencil |    20 |
 | soap   |    80 |
 +--------+-------+
-
+ 
 2.    List the product names, only include their purchased quantity more than 3.
 
 mysql> select pname from product where pid in(select pid from Invoice_item group by pid having sum(quantity)>3);
