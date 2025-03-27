@@ -8,7 +8,7 @@ mysql> select *  from Purchased_Customers;
 | id    | name    | addrress  | city    | ph_no       |
 +-------+---------+-----------+---------+-------------+
 | 10001 | yaseen  | kk house  | calicut | 5051234567  |
-| 10002 | amil    | lm house  | tvm     | 5051230007  |
+| 10002 | amil    | lm house  | tvm     | 5051230007  | 
 | 10003 | yasmeen | vkc house | ekm     | 50512333356 |
 +-------+---------+-----------+---------+-------------+
 3 rows in set (0.00 sec)
