@@ -1,0 +1,109 @@
+OPTIMIZING DATABASE: (JOINS)
+
+1.     List the product name and quantity of invoice items.
+
+mysql> SELECT p.pname, ii.quantity  FROM Invoice_item ii JOIN product p ON ii.pid = p.pid;
++--------+----------+
+| pname  | quantity |
++--------+----------+
+| pen    |        1 |
+| pencil |        3 |
+| soap   |       15 |
+| pencil |        4 |
++--------+----------+
+4 rows in set (0.00 sec)
+
+2.    Display invoice details of the transaction dated ’31-01-2022’.
+
+select * from invoice_master  where inv_date = '2022-01-31';
+
+mysql> select * from Invoice_master  where inv_date = '2024-03-01';
++--------+---------+------------+
+| inv_id | cust_id | inv_date   |
++--------+---------+------------+
+|    101 |   10001 | 2024-03-01 |
++--------+---------+------------+
+1 row in set (0.00 sec)
+
+3.    Display the customer name, product name, invoice date of purchased item ‘pen’.
+
+mysql> select c.name, p.pname, im.inv_date  from customer c  join Invoice_master
+ im on c.id = im.cust_id join Invoice_item ii on im.inv_id = ii.inv_id  join product p on ii.pid = p.pid  where p.pname = 'pen';
++--------+-------+------------+
+| name   | pname | inv_date   |
++--------+-------+------------+
+| yaseen | pen   | 2024-03-01 |
++--------+-------+------------+
+1 row in set (0.00 sec)
+
+4.    Display all customer details and invoice details must include customer has not purchased items.
+
+mysql> select c.*, im.*  from customer c  left join Invoice_master im on c.id =
+im.cust_id;
++-------+---------+-----------+---------+-------------+--------+---------+------------+
+| id    | name    | addrress  | city    | ph_no       | inv_id | cust_id | inv_date   |
++-------+---------+-----------+---------+-------------+--------+---------+------------+
+| 10001 | yaseen  | kk house  | calicut | 5051234567  |    101 |   10001 | 2024-03-01 |
+| 10002 | amil    | lm house  | tvm     | 5051230007  |    102 |   10002 | 2024-07-11 |
+| 10003 | yasmeen | vkc house | ekm     | 50512333356 |    103 |   10003 | 2024-04-21 |
+| 10004 | sanin   | bj house  | calicut | NULL        |   NULL |    NULL | NULL       |
+| 10005 | nabeel  | jk house  | calicut | 9074824884  |   NULL |    NULL | NULL       |
+| 10006 | naheel  | kkg house | calicut | 90748266884 |   NULL |    NULL | NULL       |
++-------+---------+-----------+---------+-------------+--------+---------+------------+
+6 rows in set (0.00 sec)
+
+
+ OPTIMIZING DATABASE: (Using Set, arithmetic, logical and special operators)
+
+
+1.        Display customer_id, city  who lives either in ‘CLT’ or in ‘TVM’
+
+mysql> select id, city  from customer  where city in ('calicut', 'tvm');
++-------+---------+
+| id    | city    |
++-------+---------+
+| 10001 | calicut |
+| 10002 | tvm     |
+| 10004 | calicut |
+| 10005 | calicut |
+| 10006 | calicut |
++-------+---------+
+5 rows in set (0.00 sec)
+
+2.       Display product details with an updated price amount(new price= old price+5rs)
+
+
+mysql> select pid, pname, price, price + 5 as new_price from product;
++-----+----------+-------+-----------+
+| pid | pname    | price | new_price |
++-----+----------+-------+-----------+
+|   1 | pen      |    50 |        55 |
+|   2 | pencil   |    20 |        25 |
+|   3 | soap     |    80 |        85 |
+|   4 | sharpner |    60 |        65 |
+|   5 | ruler    |     0 |         5 |
++-----+----------+-------+-----------+
+5 rows in set (0.00 sec)
+
+
+3.    Display customer details who doesn’t have phone number and lives in ‘Calicut’ city (use logical operators)
+
+mysql> select * from customer where ph_no is null and city = 'calicut';
++-------+-------+----------+---------+-------+
+| id    | name  | addrress | city    | ph_no |
++-------+-------+----------+---------+-------+
+| 10004 | sanin | bj house | calicut | NULL  |
++-------+-------+----------+---------+-------+
+1 row in set (0.00 sec)
+
+4.    List the product names if it finds any records in the invoice items table has quantity =3 (use special operators)
+
+mysql> select pname  from product p  where exists (  select 1 from Invoice_item
+ii  where ii.pid = p.pid and ii.quantity = 3  );
++--------+
+| pname  |
++--------+
+| pencil |
++--------+
+1 row in set (0.00 sec)
+
