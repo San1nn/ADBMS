@@ -11,7 +11,7 @@ mysql> SELECT p.pname, ii.quantity  FROM Invoice_item ii JOIN product p ON ii.pi
 | soap   |       15 |
 | pencil |        4 |
 +--------+----------+
-4 rows in set (0.00 sec)
+4 rows in set (0.00 sec) 
 
 2.    Display invoice details of the transaction dated ’31-01-2022’.
 
