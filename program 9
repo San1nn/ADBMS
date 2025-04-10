@@ -1,6 +1,6 @@
 PL/SQL - FUNCTIONS
 
-
+ 
 1.Create a function to calculate price_range(low, medium, high) of each product. If price<=5 indicate as low, upto 50 indicate as medium, and above as high.
 
 
