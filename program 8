@@ -112,3 +112,4 @@ mysql> call invoice_details('amil') //
 +------------+--------------+--------------+----------+
 1 row in set (0.00 sec)
 
+//VERIFIED
