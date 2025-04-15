@@ -1,0 +1,114 @@
+1.      Create a procedure to display all tables in the invoice database.
+
+mysql> delimiter //
+mysql> use INVOICE //
+Database changed
+mysql> create procedure shows() 
+    -> begin
+    -> select * from customer;
+    -> select * from product;
+    -> select * from Invoice_master;
+    -> select * from Invoice_item;
+    ->  end //
+Query OK, 0 rows affected (0.19 sec)
+
+mysql> call shows //
++-------+---------+-----------+---------+-------------+
+| id    | name    | addrress  | city    | ph_no       |
++-------+---------+-----------+---------+-------------+
+| 10001 | yaseen  | kk house  | calicut | 5051234567  |
+| 10002 | amil    | lm house  | tvm     | 5051230007  |
+| 10003 | yasmeen | vkc house | ekm     | 50512333356 |
+| 10004 | sanin   | bj house  | calicut | NULL        |
+| 10005 | nabeel  | jk house  | calicut | 9074824884  |
+| 10006 | naheel  | kkg house | calicut | 90748266884 |
++-------+---------+-----------+---------+-------------+
+6 rows in set (0.02 sec)
+
++-----+----------+-------+
+| pid | pname    | price |
++-----+----------+-------+
+|   1 | pen      |    50 |
+|   2 | pencil   |    20 |
+|   3 | soap     |    80 |
+|   4 | sharpner |    60 |
+|   5 | ruler    |     0 |
++-----+----------+-------+
+5 rows in set (0.02 sec)
+
++--------+---------+------------+
+| inv_id | cust_id | inv_date   |
++--------+---------+------------+
+|    101 |   10001 | 2024-03-01 |
+|    102 |   10002 | 2024-07-11 |
+|    103 |   10003 | 2024-04-21 |
++--------+---------+------------+
+3 rows in set (0.02 sec)
+
++--------+------+----------+
+| inv_id | pid  | quantity |
++--------+------+----------+
+|    101 |    1 |        1 |
+|    101 |    2 |        3 |
+|    102 |    3 |       15 |
+|    103 |    2 |        4 |
++--------+------+----------+
+4 rows in set (0.02 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+
+2.      Create a procedure to find greatest of 2 numbers.
+
+mysql> create procedure 2num( a int, b int, out max int)
+    -> begin set max=a;
+    -> if b>max then
+    -> set max=b;
+    -> end if;
+    -> end //
+Query OK, 0 rows affected (0.20 sec)
+
+mysql> call 2num (5,7,@max) //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select @max  as 'greatest number' //
++-----------------+
+| greatest number |
++-----------------+
+|               7 |
++-----------------+
+1 row in set (0.00 sec)
+
+
+3.      Create a procedure to display invoice details of a particular customer.
+
+mysql> DELIMITER //
+mysql> CREATE PROCEDURE invoice_details(IN cust_name VARCHAR(10))
+    ->    BEGIN
+    ->    SELECT
+    ->    im.inv_id AS 'Invoice ID',
+    ->    im.inv_date AS 'Invoice Date',
+    ->    p.pname AS 'Product Name',
+    ->    ii.quantity AS 'Quantity'
+    ->    FROM
+    ->     Invoice_master im  
+    ->   JOIN
+    ->    Invoice_item ii ON im.inv_id = ii.inv_id  
+    ->   JOIN
+    ->    product p ON p.pid = ii.pid  
+    ->   JOIN
+    ->    customer c ON im.cust_id = c.id  
+    ->   WHERE
+    ->   c.name = cust_name;  
+    ->   END //
+Query OK, 0 rows affected (0.13 sec)
+
+
+mysql> call invoice_details('amil') //
++------------+--------------+--------------+----------+
+| Invoice ID | Invoice Date | Product Name | Quantity |
++------------+--------------+--------------+----------+
+|        102 | 2024-07-11   | soap         |       15 |
++------------+--------------+--------------+----------+
+1 row in set (0.00 sec)
+
