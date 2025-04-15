@@ -1,5 +1,5 @@
 1.      Create a trigger to handle updates to the customer table.
-
+ 
 
 mysql> create table cust(id int, name varchar(10), city varchar(10), phno bigint) $
 Query OK, 0 rows affected (1.10 sec)
