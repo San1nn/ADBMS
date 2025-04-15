@@ -1,0 +1,60 @@
+1.      Create a trigger to handle updates to the customer table.
+
+
+mysql> create table cust(id int, name varchar(10), city varchar(10), phno bigint) $
+Query OK, 0 rows affected (1.10 sec)
+
+mysql> create trigger c_upd
+    ->      after update on customer 
+    ->      for each row 
+    ->      begin 
+    ->      insert into cust set 
+    ->      id = new.id, 
+    ->      name = new.name, 
+    ->     city = new.city, 
+    ->      phno = new.ph_no;
+    ->     end $
+Query OK, 0 rows affected (0.19 sec)
+
+mysql>  update customer set name = 'yasi', city = 'kochi', ph_no = 8080808080 where id = 10001 $
+Query OK, 1 row affected (0.10 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from cust; $
++-------+------+-------+------------+
+| id    | name | city  | phno       |
++-------+------+-------+------------+
+| 10001 | yasi | kochi | 8080808080 |
++-------+------+-------+------------+
+1 row in set (0.00 sec)
+
+
+2. Create a trigger to handle inserts to the product relation ( if price < 5 the set price to 10).
+
+mysql> delimiter $
+mysql> create trigger product_insert_check
+    ->      before insert on product
+    ->      for each row
+    ->      begin
+    ->      if new.price < 5 then
+    ->      set new.price = 10;
+    ->      end if;
+    ->      end $
+Query OK, 0 rows affected (0.14 sec)
+
+mysql> insert into product values( 7, 'eraser', 4) $
+Query OK, 1 row affected (0.10 sec)
+
+mysql> select * from product; $
++-----+----------+-------+
+| pid | pname    | price |
++-----+----------+-------+
+|   1 | pen      |    50 |
+|   2 | pencil   |    20 |
+|   3 | soap     |    80 |
+|   4 | sharpner |    60 |
+|   5 | ruler    |     0 |
+|   7 | eraser   |    10 |
++-----+----------+-------+
+6 rows in set (0.00 sec)
+
