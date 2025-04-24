@@ -1,0 +1,106 @@
+NoSQL- RETRIEVING DATA
+
+1.      Write a MongoDB query to display the customer documents having city ‘ekm’,’tvm’.
+
+INVOICE> db.customer.find({
+...   city: { $in: ["ekm", "tvm"] }
+... })
+[
+  {
+    _id: ObjectId("680a05ea6902761ca60ba364"),
+    customer_id: 4,
+    name: 'ashwin',
+    email: 'ashwin6@gmail.com',
+    phone: '9874037800',
+    address: 'kv house mattaya,kerala',
+    city: 'tvm'
+  },
+  {
+    _id: ObjectId("680a05ea6902761ca60ba365"),
+    customer_id: 5,
+    name: 'arun',
+    email: 'arun55@gmail.com',
+    phone: '9705573089',
+    address: 'ar house kuttiyadi,kerala',
+    city: 'ekm'
+  }
+]
+
+
+2.     Write a MongoDB query to display all product documents their price >50.
+
+
+INVOICE> db.product.find({
+...   price: { $gt: 50 }
+... })
+[
+  {
+    _id: ObjectId("6809ffae6902761ca60ba361"),
+    product_id: 101,
+    name: 'mouse',
+    category: 'device',
+    price: 200,
+    stock: 50
+  },
+  {
+    _id: ObjectId("680a074a6902761ca60ba366"),
+    product_id: 101,
+    name: 'mouse',
+    category: 'device',
+    price: 200,
+    stock: 50
+  },
+  {
+    _id: ObjectId("680a08386902761ca60ba367"),
+    product_id: 102,
+    name: 'notebook',
+    category: 'stationary',
+    price: 250,
+    stock: 40
+  },
+  {
+    _id: ObjectId("680a08386902761ca60ba368"),
+    product_id: 103,
+    name: 'keyboard',
+    category: 'device',
+    price: 500,
+    stock: 30
+  }
+]
+
+3.     Write a MongoDB query to find customer documents who not live in ‘tvm’.
+
+INVOICE> db.customer.find({
+...   city: { $ne: "tvm" }
+... })
+[
+  {
+    _id: ObjectId("6809ff7b6902761ca60ba360"),
+    customer_id: 1,
+    name: 'Amil nishan',
+    email: 'amil@gmail.com',
+    phone: '8563802749',
+    address: 'kv house mattaya pattambi,palakkad,kerala',
+    city: 'Palakkad'
+  },
+  {
+    _id: ObjectId("680a00456902761ca60ba363"),
+    customer_id: 3,
+    name: 'sanin',
+    email: 'sanin_ar@gmail.com',
+    phone: '9705863089',
+    address: 'ar house kuttiyadi,kozhikkode,kerala',
+    city: 'Wayanad'
+  },
+  {
+    _id: ObjectId("680a05ea6902761ca60ba365"),
+    customer_id: 5,
+    name: 'arun',
+    email: 'arun55@gmail.com',
+    phone: '9705573089',
+    address: 'ar house kuttiyadi,kerala',
+    city: 'ekm'
+  }
+]
+
+
