@@ -6,7 +6,7 @@ test> use INVOICE
 switched to db INVOICE
 INVOICE> db.customer.insertOne({
 ...  customer_id:1,
-...  name:"Amil nishan",
+...  name:"Amil nishan", 
 ...  email:"amil@gmail.com",
 ... phone:"8563802749",
 ... address:"kv house mattaya pattambi,palakkad,kerala"
